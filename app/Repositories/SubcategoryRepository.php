@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use App\Models\Subcategory;
 use App\Repositories\Interfaces\SubcategoryRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class SubcategoryRepository implements SubcategoryRepositoryInterface
 {
@@ -15,20 +16,47 @@ class SubcategoryRepository implements SubcategoryRepositoryInterface
     }
 
     public function create(array $data){
-        return Subcategory::create($data);
+        DB::beginTransaction();
+        try {
+            $subcategory = Subcategory::create($data);
+            DB::commit();
+            return $subcategory;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return null;
+        }
     }
 
     public function update($id, array $data){
-        $subcategory = Subcategory::find($id);
-        if ($subcategory) {
-            $subcategory->update($data);
-            return $subcategory;
+        DB::beginTransaction();
+        try {
+            $subcategory = Subcategory::find($id);
+            if ($subcategory) {
+                $subcategory->update($data);
+                DB::commit();
+                return $subcategory;
+            }
+            return null;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return null;
         }
-        return null;
     }
 
     public function delete($id){
-        return Subcategory::destroy($id);
+        DB::beginTransaction();
+        try {
+            $subcategory = Subcategory::find($id);
+            if ($subcategory) {
+                $subcategory->delete();
+                DB::commit();
+                return $subcategory;
+            }
+            return null;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return null;
+        }
     }
 
     public function getByCategoryId($categoryId){

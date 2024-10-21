@@ -24,20 +24,24 @@ class CategoryController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(){
-        return view('categories.create');
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request){
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories',
-        ]);
+        try{
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'slug' => 'required|string|max:255|unique:categories',
+            ]);
 
-        $this->categoryRepository->createCategory($validatedData);
-        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
+            $this->categoryRepository->createCategory($validatedData);
+            return redirect()->route('categories.index')->with('success', 'Category created successfully.');
+        }catch(\Exception $e){
+            throw new \Exception('Error in : ' . $e->getMessage());
+        }
     }
 
     /**
