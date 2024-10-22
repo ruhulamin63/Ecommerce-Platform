@@ -1,5 +1,5 @@
 # Ecommerce-Platform
-o build a simplified e-commerce platform with CRUD operations for categories, subcategories, and products using Laravel 11.
+To build a e-commerce platform with CRUD operations for categories, subcategories, and products using Laravel 11.
 
 I have used  "php": "^8.2", and "laravel/framework": "^11.9".
 
