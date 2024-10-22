@@ -5,7 +5,7 @@
 
     <!-- Button to open the create category modal -->
     <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createCategoryModal">
-        Add Category
+        Add New
     </button>
 
     <!-- Categories Table -->
@@ -52,10 +52,6 @@
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name</label>
                                     <input type="text" class="form-control" name="name" value="{{ $category->name }}" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="slug" class="form-label">Slug</label>
-                                    <input type="text" class="form-control" name="slug" value="{{ $category->slug }}" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -108,10 +104,6 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="slug" class="form-label">Slug</label>
-                            <input type="text" class="form-control" name="slug" required>
                         </div>
                     </div>
                     <div class="modal-footer">

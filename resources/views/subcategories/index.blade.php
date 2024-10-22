@@ -5,7 +5,7 @@
 
     <!-- Button to open the create subcategory modal -->
     <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createSubcategoryModal">
-        Add Subcategory
+        Add New
     </button>
 
     <!-- Subcategories Table -->
@@ -54,10 +54,6 @@
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name</label>
                                     <input type="text" class="form-control" name="name" value="{{ $subcategory->name }}" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="slug" class="form-label">Slug</label>
-                                    <input type="text" class="form-control" name="slug" value="{{ $subcategory->slug }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="category_id" class="form-label">Category</label>
@@ -120,10 +116,6 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="slug" class="form-label">Slug</label>
-                            <input type="text" class="form-control" name="slug" required>
                         </div>
                         <div class="mb-3">
                             <label for="category_id" class="form-label">Category</label>

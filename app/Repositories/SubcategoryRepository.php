@@ -7,59 +7,69 @@ use Illuminate\Support\Facades\DB;
 
 class SubcategoryRepository implements SubcategoryRepositoryInterface
 {
+    protected $model;
+
+    // Constructor to bind model to repo
+    public function __construct(Subcategory $subcategory) {
+        $this->model = $subcategory;
+    }
+
+    // Get all subcategories
     public function getAll(){
-        return Subcategory::all();
+        return $this->model->latest()->get();
     }
 
+    // Get a subcategory by ID
     public function getById($id){
-        return Subcategory::find($id);
+        return $this->model->findOrFail($id);
     }
 
+    // Create a new subcategory
     public function create(array $data){
         DB::beginTransaction();
         try {
-            $subcategory = Subcategory::create($data);
+            $subcategory = $this->model->create($data);
             DB::commit();
+
             return $subcategory;
         } catch (\Exception $e) {
             DB::rollBack();
-            return null;
         }
     }
 
+    // Update a subcategory
     public function update($id, array $data){
         DB::beginTransaction();
         try {
-            $subcategory = Subcategory::find($id);
-            if ($subcategory) {
-                $subcategory->update($data);
-                DB::commit();
-                return $subcategory;
-            }
-            return null;
+            $subcategory = $this->model->findOrFail($id);
+            $subcategory->update($data);
+            DB::commit();
+
+            return $subcategory;
         } catch (\Exception $e) {
             DB::rollBack();
-            return null;
         }
     }
 
     public function delete($id){
         DB::beginTransaction();
         try {
-            $subcategory = Subcategory::find($id);
-            if ($subcategory) {
-                $subcategory->delete();
-                DB::commit();
-                return $subcategory;
-            }
-            return null;
+            $subcategory = $this->model->findOrFail($id);
+            $subcategory->delete();
+            DB::commit();
+
+            return $subcategory;
         } catch (\Exception $e) {
             DB::rollBack();
-            return null;
         }
     }
 
     public function getByCategoryId($categoryId){
-        return Subcategory::where('category_id', $categoryId)->get();
+        return $this->model->where('category_id', $categoryId)->get();
+    }
+
+    // Find a subcategory by slug
+    public function findBySlug($slug) {
+        return $this->model->where('slug', $slug)->firstOrFail();
     }
 }

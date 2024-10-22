@@ -9,6 +9,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Root route showing all products
+Route::get('/', [ProductController::class, 'index'])->name('home');
+
 // Manage categories, subcategories, and products
 Route::resource('categories', CategoryController::class);
 Route::resource('subcategories', SubcategoryController::class);

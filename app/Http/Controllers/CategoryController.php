@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use app\Repositories\Interfaces\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -30,14 +31,11 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request){
+    public function store(CategoryRequest $request){
         try{
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'slug' => 'required|string|max:255|unique:categories',
-            ]);
-
+            $validatedData = $request->validated();
             $this->categoryRepository->createCategory($validatedData);
+
             return redirect()->route('categories.index')->with('success', 'Category created successfully.');
         }catch(\Exception $e){
             throw new \Exception('Error in : ' . $e->getMessage());
@@ -47,8 +45,9 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id){
-
+    public function show(string $slug){
+        $category = $this->categoryRepository->findBySlug($slug);
+        return view('categories.show', compact('category'));
     }
 
     /**
@@ -62,13 +61,10 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id){
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories,slug,' . $id,
-        ]);
-
+    public function update (CategoryRequest $request, string $id){
+        $validatedData = $request->validated();
         $this->categoryRepository->updateCategory($id, $validatedData);
+
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubCategoryRequest;
 use app\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\SubcategoryRepositoryInterface;
 use Illuminate\Http\Request;
@@ -35,13 +36,8 @@ class SubcategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request){
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:subcategories',
-            'category_id' => 'required|exists:categories,id'
-        ]);
-
+    public function store(SubCategoryRequest $request){
+        $validatedData = $request->validated();
         $this->subcategoryRepository->create($validatedData);
 
         return redirect()->route('subcategories.index')->with('success', 'Subcategory created successfully.');
@@ -50,8 +46,9 @@ class SubcategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id){
-
+    public function show(string $slug){
+        $subcategory = $this->subcategoryRepository->findBySlug($slug);
+        return view('subcategories.show', compact('subcategory'));
     }
 
     /**
@@ -65,13 +62,8 @@ class SubcategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id){
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:subcategories,slug,' . $id,
-            'category_id' => 'required|exists:categories,id'
-        ]);
-
+    public function update(SubCategoryRequest $request, string $id){
+        $validatedData = $request->validated();
         $this->subcategoryRepository->update($id, $validatedData);
 
         return redirect()->route('subcategories.index')->with('success', 'Subcategory updated successfully.');

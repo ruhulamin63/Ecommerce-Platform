@@ -7,19 +7,36 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
+    protected $model;
+
+    // Constructor to bind model to repo
+    public function __construct(Category $category)
+    {
+        $this->model = $category;
+    }
+
+    // Get all categories
     public function getAllCategories() {
-        return Category::all();
+        return $this->model->latest()->get();
     }
 
+    // Get a category by ID
     public function getCategoryById($id) {
-        return Category::find($id);
+        return $this->model->findOrFail($id);
     }
 
+    // Find a category by slug
+    public function findBySlug($slug) {
+        return $this->model->where('slug', $slug)->firstOrFail();
+    }
+
+    // Create a new category
     public function createCategory(array $data) {
         DB::beginTransaction();
         try {
-            $category = Category::create($data);
+            $category = $this->model->create($data);
             DB::commit();
+
             return $category;
         } catch (\Exception $e) {
             DB::rollBack();
@@ -27,11 +44,14 @@ class CategoryRepository implements CategoryRepositoryInterface
         }
     }
 
+    // Update a category
     public function updateCategory($id, array $data) {
         DB::beginTransaction();
         try {
-            $category = Category::where('id', $id)->update($data);
+            $category = $this->model->findOrFail($id);
+            $category->update($data);
             DB::commit();
+
             return $category;
         } catch (\Exception $e) {
             DB::rollBack();
@@ -42,8 +62,10 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function deleteCategory($id) {
         DB::beginTransaction();
         try {
-            $category = Category::destroy($id);
+            $category = $this->model->findOrFail($id);
+            $category->delete();
             DB::commit();
+
             return $category;
         } catch (\Exception $e) {
             DB::rollBack();

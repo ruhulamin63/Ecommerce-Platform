@@ -5,7 +5,7 @@
 
     <!-- Button to open the create product modal -->
     <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createProductModal">
-        Add Product
+        Add New
     </button>
 
     <!-- Products Table -->
@@ -28,10 +28,10 @@
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->subcategory->category->name }}</td>
                 <td>{{ $product->subcategory->name }}</td>
-                <td>{{ $product->description }}</td>
-                <td>${{ $product->old_price }}</td>
-                <td>${{ $product->new_price }}</td>
-                <td><img src="{{ asset('storage/images/' . $product->image) }}" alt="{{ $product->name }}" width="80"></td>
+                <td>{{ $product->desc }}</td>
+                <td>৳ {{ $product->old_price }}</td>
+                <td>৳ {{ $product->new_price }}</td>
+                <td><img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="80"></td>
                 <td>
                     <!-- Button to open the edit product modal -->
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
@@ -74,8 +74,8 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">Description</label>
-                                    <textarea class="form-control" name="description" required>{{ $product->description }}</textarea>
+                                    <label for="desc" class="form-label">Description</label>
+                                    <textarea class="form-control" name="desc" required>{{ $product->desc }}</textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="old_price" class="form-label">Old Price</label>
@@ -86,9 +86,9 @@
                                     <input type="number" class="form-control" name="new_price" value="{{ $product->new_price }}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="image" class="form-label">Product Image</label>
+                                    <label for="image" class="form-label">Image</label>
                                     <input type="file" class="form-control" name="image">
-                                    <small>Current image: <img src="{{ asset('storage/images/' . $product->image) }}" alt="{{ $product->name }}" width="50"></small>
+                                    <small>Current image: <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" width="50"></small>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -163,7 +163,7 @@
                             <input type="number" class="form-control" name="new_price" required>
                         </div>
                         <div class="mb-3">
-                            <label for="image" class="form-label">Product Image</label>
+                            <label for="image" class="form-label">Image</label>
                             <input type="file" class="form-control" name="image">
                         </div>
                     </div>
